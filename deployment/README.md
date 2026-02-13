@@ -1,7 +1,7 @@
 # OpenClaw Shield Deployment
 
 **Instance:** clawdbot-toronto (production)  
-**Owner:** Pedro Bento de Faria  
+**Owner:** User  
 **Deployed:** 2026-02-13 04:30 UTC
 
 ---
