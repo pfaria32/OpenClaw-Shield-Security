@@ -17,9 +17,9 @@ OWNER = "Pedro Bento de Faria"
 # RUNTIME GUARD SETTINGS
 # ============================================================================
 
-# Runtime guard is DISABLED by default as designed
-# Enable only after reviewing policies and testing
-RUNTIME_GUARD_ENABLED = False
+# Runtime guard is NOW ENABLED (2026-02-13)
+# Activated after ClamAV installation and policy review
+RUNTIME_GUARD_ENABLED = True
 
 # ============================================================================
 # STATIC SCANNER SETTINGS
@@ -210,3 +210,39 @@ ALERT_MESSAGE_TEMPLATE = """
 cat {report_path} | jq
 ```
 """
+
+# ============================================================================
+# CLAMAV INTEGRATION (Host-Level Antivirus)
+# ============================================================================
+
+# ClamAV daemon configuration
+CLAMAV_ENABLED = True
+CLAMAV_SOCKET = "/run/clamav/clamd.ctl"  # Socket path on host
+CLAMAV_TIMEOUT = 120  # Scan timeout in seconds
+
+# ClamAV installation details (2026-02-13)
+# Version: 1.4.3+dfsg-0ubuntu0.24.04.1
+# Signatures: ~3.6M (daily: 354,987 + main: 3,287,027 + bytecode: 80)
+# Services:
+#   - clamav-daemon: Active (clamd scanner)
+#   - clamav-freshclam: Active (signature updates)
+#   - clamav-daemon.socket: Active (socket activation)
+
+# When to scan with ClamAV
+CLAMAV_SCAN_ON_FILE_READ = False  # Too slow for every read
+CLAMAV_SCAN_ON_FILE_WRITE = True  # Scan files before writing
+CLAMAV_SCAN_DOWNLOADS = True      # Scan network-fetched files
+CLAMAV_SCAN_UPLOADS = True        # Scan before uploading files
+
+# What to scan
+CLAMAV_MAX_FILE_SIZE = 50_000_000  # 50MB max (larger files skipped)
+CLAMAV_SCAN_ARCHIVES = True        # Scan inside .zip, .tar, etc.
+
+# Actions on virus detection
+CLAMAV_ACTION_ON_VIRUS = "block"   # block | quarantine | log
+CLAMAV_QUARANTINE_DIR = "/home/node/.openclaw/workspace/security-reports/quarantine"
+
+# Notification on virus detection
+CLAMAV_ALERT_ON_VIRUS = True
+CLAMAV_ALERT_METHOD = "openclaw_message"
+CLAMAV_ALERT_CHANNEL = "telegram"

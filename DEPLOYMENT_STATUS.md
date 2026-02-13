@@ -14,11 +14,18 @@
 - **Output:** /home/node/.openclaw/workspace/security-reports/
 - **Alerting:** Telegram (on critical findings)
 
-### Runtime Guard ⏸️ CONFIGURED BUT DISABLED
-- **Status:** Prepared but not enabled (by design)
-- **Reason:** Requires explicit activation + policy review
+### ClamAV Antivirus ✅ ACTIVE (Host-Level)
+- **Version:** 1.4.3+dfsg-0ubuntu0.24.04.1
+- **Signatures:** ~3.6M (auto-updating)
+- **Services:** clamav-daemon, clamav-freshclam, clamav-daemon.socket
+- **Socket:** /run/clamav/clamd.ctl
+- **Integration:** Scans files before write/upload operations
+
+### Runtime Guard ✅ ENABLED
+- **Status:** Active and operational
+- **Activated:** 2026-02-13 04:39 UTC
 - **Config:** deployment/openclaw-config.py
-- **To enable:** Set RUNTIME_GUARD_ENABLED = True
+- **ClamAV Integration:** Active (host-level malware scanning)
 
 ---
 
